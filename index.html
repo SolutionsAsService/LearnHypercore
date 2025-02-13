@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hypercore: Simplifying Secure Data Sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Hypercore Documentation</h1>
+    <p>Secure, Distributed Append-Only Log for Large Datasets &amp; Real-Time Data</p>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="basic.html">Basic Concepts</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="api.html">API Reference</a></li>
+      <li><a href="examples.html">Examples</a></li>
+      <li><a href="advanced.html">Advanced</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <!-- Home Section -->
+    <section id="home">
+      <h2>Welcome to Hypercore</h2>
+      <p>
+        Hypercore is like a digital ledger or diary where every entry is permanently recorded in the order it was added.
+        Imagine a notebook where you can only add pages at the end—nothing can be erased or changed once written.
+        This unique design ensures that your data is secure, immutable, and always available for review.
+      </p>
+      <p>
+        In simple terms, Hypercore lets you share large amounts of data quickly and safely across many devices,
+        without relying on a central server. It’s perfect for building peer-to-peer applications that need to work in real time.
+      </p>
+      <p>
+        Our goal is to make secure, peer-to-peer data sharing as easy as keeping a shared diary among friends.
+      </p>
+    </section>
+    
+    <!-- Laymen Friendly Explanation -->
+    <section id="basic">
+      <h2>Understanding Hypercore in Simple Terms</h2>
+      <p>
+        Picture a group chat where every message is written on a permanent note pinned on a board. Once a message is posted,
+        it remains unchanged, ensuring everyone sees the same history of the conversation.
+      </p>
+      <p>
+        With Hypercore, every new piece of data is like a message added to this board—it is recorded in sequence and cannot be modified later.
+        This means your data is always preserved, secure, and transparent.
+      </p>
+      <p>
+        For a more detailed, beginner-friendly explanation, visit our <a href="basic.html">Basic Concepts</a> page.
+      </p>
+    </section>
+    
+    <!-- Features Section -->
+    <section id="features">
+      <h2>What Makes Hypercore Special?</h2>
+      <p>
+        Hypercore is built with several powerful features that work together to create a fast, secure, and efficient system:
+      </p>
+      <ul>
+        <li>
+          <strong>Sparse Replication:</strong> It downloads only the parts of the data you need, saving both time and bandwidth.
+        </li>
+        <li>
+          <strong>Realtime Updates:</strong> As soon as new data is added, it’s available to everyone instantly.
+        </li>
+        <li>
+          <strong>High Performance:</strong> A simple, flat file structure keeps operations fast and responsive.
+        </li>
+        <li>
+          <strong>Secure Integrity:</strong> Using advanced cryptography (like signed Merkle trees), it ensures that your data remains untampered.
+        </li>
+        <li>
+          <strong>Modular Design:</strong> It’s designed to focus solely on sharing data, making it easy to integrate into various applications.
+        </li>
+        <li>
+          <strong>Advanced Tools:</strong> Features like on-disk encryption, write-ahead logging, and snapshot views add extra layers of security and convenience.
+        </li>
+      </ul>
+      <p>
+        For an in-depth look at each feature, check out our <a href="features.html">Features</a> page.
+      </p>
+    </section>
+    
+    <!-- Installation Section -->
+    <section id="installation">
+      <h2>Getting Started with Hypercore</h2>
+      <p>
+        Installing Hypercore is straightforward if you're familiar with Node.js. It is available as an npm package.
+        Simply run the following command in your terminal:
+      </p>
+      <pre><code>npm install hypercore</code></pre>
+      <p>
+        Once installed, Hypercore lets you create a secure and immutable data log for your application—whether it's a real-time chat app,
+        a collaborative tool, or a data streaming service.
+      </p>
+      <p>
+        For detailed installation instructions and setup guides, visit our <a href="installation.html">Installation</a> page.
+      </p>
+    </section>
+    
+    <!-- Call to Action Section -->
+    <section id="learn-more">
+      <h2>Explore Further</h2>
+      <p>
+        Whether you’re a developer looking to integrate Hypercore into your project or simply curious about modern data sharing techniques,
+        our documentation is designed to guide you every step of the way.
+      </p>
+      <p>
+        Use the navigation links above to dive deeper into the basics, explore features, check out API details, view examples, and even learn advanced techniques.
+      </p>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Hypercore Documentation. All rights reserved.</p>
+  </footer>
+  
+  <script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = this.getAttribute('href');
+      });
+    });
+  </script>
+</body>
+</html>
