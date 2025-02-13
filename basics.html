@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hypercore - Secure Distributed Data Sharing</title>
+</head>
+<body>
+  <header>
+    <h1>Welcome to Hypercore</h1>
+  </header>
+  
+  <main>
+    <section>
+      <h2>What is Hypercore?</h2>
+      <p>
+        Hypercore is a technology designed to help you share and manage large amounts of data safely and quickly. Think of it like a digital notebook that only adds new pages at the end—once a page is written, it cannot be changed. This “append-only log” makes sure that every piece of data is recorded in order and remains unchanged.
+      </p>
+      <p>
+        It’s built for sharing large datasets and real-time information between many computers without needing a central server. With Hypercore, data is distributed, which means it’s stored and shared among multiple devices, making your applications both fast and resilient.
+      </p>
+    </section>
+    
+    <section>
+      <h2>How Does It Work?</h2>
+      <p>
+        Imagine you and a group of friends are keeping a joint diary where everyone can add entries, but no one can erase or alter what’s already written. Every time someone adds an entry, it’s permanently recorded at the end of the diary. Hypercore works similarly: new data is always added to the end, ensuring a reliable and chronological record.
+      </p>
+      <p>
+        In addition, Hypercore uses a secure transport protocol. This is like sending your diary pages in a locked envelope, so even if someone intercepts it, they can’t tamper with or understand the content. This secure channel is essential for keeping your data safe while sharing it with others.
+      </p>
+    </section>
+    
+    <section>
+      <h2>Key Features Explained in Simple Terms</h2>
+      <ul>
+        <li>
+          <strong>Improved Fork Detection:</strong> Imagine if your diary accidentally split into two versions. Fork detection helps identify these splits and ensures everyone is following the same version, keeping the shared record consistent.
+        </li>
+        <li>
+          <strong>Optional On-Disk Encryption:</strong> Think of this as putting your diary inside a safe. Even if someone gets access to the physical diary (or data), they won’t be able to read it without the key.
+        </li>
+        <li>
+          <strong>Write-Ahead Log:</strong> Before any new entry is permanently added, a quick note is made to remember what is about to happen. This way, if there’s a sudden power loss or a system crash, you won’t lose the latest information.
+        </li>
+        <li>
+          <strong>Session and Snapshot Methods:</strong> These features let you view the same set of data in different ways or at different times without disturbing the original log. It’s like having multiple copies of your diary, each capturing the state of things at a specific moment.
+        </li>
+        <li>
+          <strong>Truncate Method:</strong> Sometimes, you might want to start a new chapter or edition of your diary. The truncate method allows you to deliberately cut off the old log at a certain point and begin a fresh version, which is especially useful for managing updates in complex applications.
+        </li>
+      </ul>
+    </section>
+    
+    <section>
+      <h2>Why Use Hypercore?</h2>
+      <p>
+        Hypercore is ideal for building applications that require fast, secure, and scalable data sharing, such as real-time chats, collaborative tools, or data monitoring systems. Its design ensures that your data is kept safe, remains consistent, and is easily distributed across multiple devices.
+      </p>
+      <p>
+        By using Hypercore, developers can create peer-to-peer applications without relying on a central server, which enhances privacy, improves performance, and reduces the risk of a single point of failure.
+      </p>
+    </section>
+    
+    <section>
+      <h2>Getting Started</h2>
+      <p>
+        Ready to explore Hypercore further? Visit the official documentation or check out the GitHub repository to dive into technical details, tutorials, and community discussions.
+      </p>
+      <p>
+        <a href="https://github.com/holepunchto/hypercore" target="_blank">View Hypercore on GitHub</a>
+      </p>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Hypercore Documentation. All rights reserved.</p>
+  </footer>
+</body>
+</html>
