@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hypercore Features Explained</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Hypercore Features</h1>
+    <p>
+      Hypercore is a secure, distributed append-only log built for sharing large datasets and streams of real-time data.
+      With a secure transport protocol, it enables fast and scalable peer-to-peer applications.
+    </p>
+  </header>
+  
+  <main>
+    <section>
+      <h2>Overview</h2>
+      <p>
+        Hypercore not only offers robust technical capabilities but also presents a design that’s easy to understand.
+        Below you’ll find an explanation of its key features—each described with both technical detail and real-world analogies.
+      </p>
+    </section>
+    
+    <section id="features">
+      <article>
+        <h3>Sparse Replication</h3>
+        <p>
+          Hypercore’s sparse replication mechanism allows you to download only the specific data blocks you need rather than the entire dataset.
+          Think of it like borrowing only the chapters you need from a massive encyclopedia—this reduces bandwidth and storage usage while ensuring that you have access to just the relevant information.
+        </p>
+      </article>
+      
+      <article>
+        <h3>Realtime Updates</h3>
+        <p>
+          With realtime updates, any new data appended to the log is instantly available across all connected peers.
+          It’s similar to receiving live notifications on your smartphone during a live event—everyone stays in sync with the most current information.
+        </p>
+      </article>
+      
+      <article>
+        <h3>High Performance</h3>
+        <p>
+          The simple flat file structure of Hypercore minimizes input/output overhead, ensuring fast and efficient data operations.
+          Imagine a perfectly organized filing cabinet where new documents are simply added to the end—this design keeps the system running quickly even under heavy use.
+        </p>
+      </article>
+      
+      <article>
+        <h3>Secure Integrity</h3>
+        <p>
+          To guarantee that your data remains untampered, Hypercore uses signed Merkle trees to verify the integrity of each data block in real time.
+          This is akin to having each page of a document sealed with a unique, tamper-evident signature—if someone tries to alter the data, it’s immediately evident.
+        </p>
+      </article>
+      
+      <article>
+        <h3>Modular Design</h3>
+        <p>
+          Hypercore is designed to focus solely on data distribution, making it easy to integrate with other systems or use as a standalone solution.
+          Think of it as a set of Lego blocks—each block is designed to fit perfectly with others, allowing you to build complex structures with flexibility and ease.
+        </p>
+      </article>
+      
+      <article>
+        <h3>Advanced Features</h3>
+        <p>
+          Beyond the basics, Hypercore includes several advanced capabilities:
+          <br><br>
+          <strong>Improved Fork Detection:</strong> The replication protocol is enhanced to detect and handle forks efficiently, ensuring the system’s resilience.
+          <br>
+          <strong>On-Disk Encryption:</strong> Optional encryption for stored data blocks (in addition to transport encryption) secures your data like a vault.
+          <br>
+          <strong>Write-Ahead Log:</strong> A write-ahead log ensures that even in the event of power loss or an unexpected shutdown, data corruption is prevented.
+          <br>
+          <strong>Session &amp; Snapshot Methods:</strong> These methods allow multiple views of the same underlying Hypercore, simplifying resource management.
+          <br>
+          <strong>Truncate Method:</strong> This method intentionally creates a new fork starting at a specified length—used extensively in autobase to manage updates.
+          <br><br>
+          Together, these advanced features function like a high-tech security system that not only protects your data but also maintains its integrity and consistency in dynamic environments.
+        </p>
+      </article>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Hypercore Documentation. All rights reserved.</p>
+  </footer>
+</body>
+</html>
