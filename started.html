@@ -202,14 +202,21 @@ stream.on('data', (data) => {
   </footer>
   
   <script>
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('nav a').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        target.scrollIntoView({ behavior: 'smooth' });
-      });
-    });
+    // Updated smooth scrolling event listener to avoid errors if the target element is not found
+document.querySelectorAll('nav a').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetSelector = this.getAttribute('href');
+    const targetElement = document.querySelector(targetSelector);
+    if (targetElement) {
+      // If the target element exists on the current page, perform smooth scrolling.
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // If the target element does not exist (e.g., on a different page), simply navigate to that URL.
+      window.location.href = targetSelector;
+    }
+  });
+});
   </script>
 </body>
 </html>
