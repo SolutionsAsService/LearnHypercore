@@ -1,7 +1,7 @@
 /* ------------------------------------------------------
-   Import Google Fonts
+   Import Google Fonts (including thin weight for Poppins)
 --------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@300;400;600;700&display=swap');
 
 /* ------------------------------------------------------
    CSS Reset & Base Styles
@@ -19,7 +19,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Apply a subtle fade-in transition on page load */
+/* Apply a subtle horizontal swipe transition on page load */
 body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
@@ -27,12 +27,21 @@ body {
   color: #333;
   padding: 20px;
   opacity: 0;
-  animation: fadeIn 0.5s ease-in forwards;
+  animation: slideIn 0.7s ease-out forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* ------------------------------------------------------
@@ -51,13 +60,14 @@ body {
 }
 
 /* ------------------------------------------------------
-   Typography
+   Typography - Consistent thin, modern headings using Poppins
 --------------------------------------------------------- */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
   margin-bottom: 1rem;
   line-height: 1.2;
   color: var(--primary-color);
+  font-weight: 300; /* Thin modern style for headings */
 }
 
 h1 {
@@ -87,7 +97,7 @@ header {
 header h1 {
   font-size: 2.5rem;
   color: #fff; /* Ensure the title is visible on a dark background */
-  font-weight: 400; /* Thinner header text for a clean, professional look */
+  font-weight: 300; /* Thin header text for a clean, professional look */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds subtle contrast */
 }
 
@@ -113,11 +123,12 @@ nav ul li {
 }
 
 nav ul li a {
+  display: inline-block;
+  padding: 0.75rem 1rem;
   color: #fff;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease, transform 0.3s ease;
-  padding: 0.5rem 1rem;
   border-radius: 4px;
 }
 
