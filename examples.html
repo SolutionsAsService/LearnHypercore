@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hypercore in Action: Extensive Examples</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Hypercore in Action: Extensive Examples</h1>
+    <p>Explore how Hypercore is used in practice through comprehensive examples and real-world use cases.</p>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="basics.html">Basic Concepts</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="started.html">Getting Started</a></li>
+      <li><a href="api.html">API Reference</a></li>
+      <li><a href="examples.html">Examples</a></li>
+      <li><a href="advanced.html">Advanced</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <!-- Basic Read/Write Example -->
+    <section id="basic-example">
+      <h2>Basic Read/Write Example</h2>
+      <p>
+        This example demonstrates how to create a Hypercore instance, append data, and then retrieve that data. It serves as the foundation for understanding how Hypercore works.
+      </p>
+      <pre><code class="language-js">// Import the hypercore module
+const Hypercore = require('hypercore');
+
+// Create a new Hypercore instance using a storage directory
+const core = new Hypercore('./my-hypercore-data');
+
+// Wait for the core to be ready
+core.ready().then(async () => {
+  // Append a simple text block
+  await core.append(Buffer.from('Hello, Hypercore!'));
+  
+  // Retrieve the first block of data
+  const block = await core.get(0);
+  console.log('Retrieved block:', block.toString());
+}).catch(console.error);
+      </code></pre>
+      <p>
+        In this basic example, Hypercore is initialized, data is added, and then that data is read back—illustrating the simple append-only log functionality.
+      </p>
+    </section>
+
+    <!-- Streaming Data Example -->
+    <section id="streaming-example">
+      <h2>Streaming Data Example</h2>
+      <p>
+        Hypercore supports efficient streaming of data. This example shows how to use a read stream to continuously receive data as it is appended.
+      </p>
+      <pre><code class="language-js">// Import hypercore
+const Hypercore = require('hypercore');
+const core = new Hypercore('./stream-data');
+
+// Wait until the core is ready
+core.ready().then(async () => {
+  // Append some data
+  await core.append(Buffer.from('First block of data'));
+  await core.append(Buffer.from('Second block of data'));
+  
+  // Create a read stream for the entire core
+  const stream = core.createReadStream();
+  
+  // Process each data block as it arrives
+  stream.on('data', (data) => {
+    console.log('Streamed data:', data.toString());
+  });
+  
+  stream.on('end', () => {
+    console.log('No more data.');
+  });
+}).catch(console.error);
+      </code></pre>
+      <p>
+        This example highlights Hypercore’s ability to push real-time updates, similar to how live news feeds or social media timelines work.
+      </p>
+    </section>
+
+    <!-- Replication Example -->
+    <section id="replication-example">
+      <h2>Replication Example</h2>
+      <p>
+        One of Hypercore’s strengths is its robust replication protocol. The following example sets up a simple replication between two Hypercore instances over a TCP connection.
+      </p>
+      <pre><code class="language-js">// Import necessary modules
+const Hypercore = require('hypercore');
+const net = require('net');
+
+// Create two Hypercore instances sharing the same key
+const coreA = new Hypercore('./coreA');
+const coreB = new Hypercore('./coreB', coreA.key);
+
+// Wait for both cores to be ready
+Promise.all([coreA.ready(), coreB.ready()]).then(() => {
+  // Create a TCP server that replicates coreB
+  const server = net.createServer(socket => {
+    socket.pipe(coreB.replicate(false)).pipe(socket);
+  });
+  
+  server.listen(3000, () => {
+    console.log('Server listening on port 3000');
+    
+    // Create a client that connects to the server and replicates coreA
+    const client = net.connect(3000, () => {
+      client.pipe(coreA.replicate(true)).pipe(client);
+    });
+  });
+  
+  // Append data to coreA to initiate replication
+  coreA.append(Buffer.from('Data replicated via Hypercore'), err => {
+    if (err) console.error(err);
+    else console.log('Data appended to coreA');
+  });
+}).catch(console.error);
+      </code></pre>
+      <p>
+        This replication example demonstrates how Hypercore synchronizes data between peers, ensuring consistency and durability in a decentralized network.
+      </p>
+    </section>
+
+    <!-- Advanced Examples: Sessions, Snapshots, & Truncation -->
+    <section id="advanced-examples">
+      <h2>Advanced Examples: Sessions, Snapshots, & Truncation</h2>
+      <p>
+        Hypercore offers advanced features that allow for managing concurrent views of data and intentional forking. This example covers sessions, snapshots, and truncation.
+      </p>
+      <pre><code class="language-js">// Import hypercore
+const Hypercore = require('hypercore');
+const core = new Hypercore('./advanced-core');
+
+// Wait until the core is ready
+core.ready().then(async () => {
+  // Append initial data to the core
+  await core.append(Buffer.from('Initial data block'));
+  
+  // Create a session to perform isolated operations
+  const session = core.session();
+  await session.append(Buffer.from('Session appended data'));
+  
+  // Take a snapshot of the core at the current state
+  const snapshot = core.snapshot();
+  const snapshotData = await snapshot.get(0);
+  console.log('Snapshot data:', snapshotData.toString());
+  
+  // Truncate the core to a specified length to start a new fork
+  await core.truncate(1);
+  console.log('Core truncated to length 1');
+}).catch(console.error);
+      </code></pre>
+      <p>
+        In this advanced example, sessions allow parallel operations on the same data, snapshots preserve a consistent view, and truncation starts a new branch of data—features that are essential in managing complex data workflows.
+      </p>
+    </section>
+
+    <!-- Real-World Use Cases -->
+    <section id="real-world-use">
+      <h2>Real-World Use Cases of Hypercore</h2>
+      <p>
+        Hypercore’s versatility has led to its adoption in a variety of innovative applications:
+      </p>
+      <ul>
+        <li>
+          <strong>Decentralized Messaging Systems:</strong>
+          Utilizing realtime updates and replication, developers have built secure, peer-to-peer messaging applications where each message is permanently recorded and synchronized across devices.
+        </li>
+        <li>
+          <strong>Collaborative Document Editing:</strong>
+          With sessions and snapshots, teams can collaborate on documents simultaneously, with every change being logged and reconciled in real time.
+        </li>
+        <li>
+          <strong>Distributed File Storage:</strong>
+          Sparse replication and on-disk encryption enable efficient file sharing and storage solutions where users download only the files they need, reducing overhead.
+        </li>
+        <li>
+          <strong>Data Streaming Platforms:</strong>
+          Hypercore’s high-performance I/O and streaming capabilities make it an ideal backbone for platforms that require continuous data updates, such as live sports feeds or financial tickers.
+        </li>
+      </ul>
+      <p>
+        These use cases demonstrate how Hypercore can be adapted to a wide range of applications, providing a secure and efficient way to manage distributed data.
+      </p>
+    </section>
+
+    <!-- Conclusion -->
+    <section id="conclusion">
+      <h2>Conclusion</h2>
+      <p>
+        The extensive examples provided above illustrate the power and flexibility of Hypercore—from basic operations to advanced functionalities like replication, session management, and data integrity.
+        Whether you’re building a decentralized application, a real-time data stream, or a collaborative tool, Hypercore offers the robust foundation you need.
+      </p>
+      <p>
+        Dive into these examples, experiment with the code, and explore how Hypercore can transform your approach to secure, distributed data sharing.
+      </p>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Hypercore Documentation. All rights reserved.</p>
+  </footer>
+</body>
+</html>
