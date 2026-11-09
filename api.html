@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API reference | Learn Hypercore</title>
+  <meta name="description" content="Every method, property and event listed here exists on hypercore, checked by a script.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-page="api">
+<main id="main" class="wrap page">
+  <h1>API reference</h1>
+  <p class="stamp"></p>
+  <p class="lede">A short reference: <span id="breakdown"></span>. A script creates a real core and checks that every method, property and static value named here exists. Events and descriptions are paraphrased from the README and are not checked by the script. For options and details, the full reference is in the <a href="https://docs.pears.com/building-blocks/hypercore">Pears documentation</a> and the <a href="https://github.com/holepunchto/hypercore#api">README</a>.</p>
+  <div class="tools"><label for="q" class="sr">Filter</label><input id="q" type="search" placeholder="Filter by name, e.g. replicate" autocomplete="off"><span id="count" class="stamp"></span></div>
+  <p class="notice" style="max-width:70ch">Constructor: <code>new Hypercore(storage, [key], [options])</code>. <code>storage</code> is a directory path. <code>key</code> is the public key of a core you want to read. Options include <code>valueEncoding</code> (<code>'json'</code>, <code>'utf-8'</code> or <code>'binary'</code>, default binary), <code>createIfMissing</code>, <code>overwrite</code>, <code>encryption</code> and <code>timeout</code>.</p>
+  <div id="api"></div>
+</main>
+<noscript><p class="notice wrap">This site loads its code examples and API list with JavaScript. The raw data is in <a href="data/examples.json">data/examples.json</a> and <a href="data/api.json">data/api.json</a>.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/api.js"></script>
+assets/api.js
+</body>
+</html>

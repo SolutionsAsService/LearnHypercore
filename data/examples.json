@@ -1,0 +1,30 @@
+[
+  {
+    "id": "first-core",
+    "title": "Your first core",
+    "lead": "Create a core, append blocks, read one back, and stream them all. Start here.",
+    "code": "const Hypercore = require('hypercore')\n\nasync function main () {\n  const core = new Hypercore('./hello-core', { valueEncoding: 'utf-8' })\n  await core.ready()\n\n  await core.append('Hello, Hypercore!')\n  await core.append(['second block', 'third block'])\n\n  console.log('length:', core.length)\n  console.log('block 0:', await core.get(0))\n\n  for await (const block of core.createReadStream()) {\n    console.log('streamed:', block)\n  }\n  await core.close()\n}\n\nmain().catch(console.error)\n",
+    "expect": "length: 3\nblock 0: Hello, Hypercore!\nstreamed: Hello, Hypercore!\nstreamed: second block\nstreamed: third block"
+  },
+  {
+    "id": "sparse-replication",
+    "title": "Replicate, and download only one block",
+    "lead": "A writer holds five blocks. A reader that knows only the writer's public key asks for block 3, and receives just that block.",
+    "code": "const Hypercore = require('hypercore')\n\nasync function main () {\n  const writer = new Hypercore('./writer')\n  await writer.ready()\n  await writer.append(['block 0', 'block 1', 'block 2', 'block 3', 'block 4'])\n\n  // The reader knows only the writer's public key\n  const reader = new Hypercore('./reader', writer.key)\n  await reader.ready()\n  reader.on('download', (index) => console.log('downloaded block', index))\n\n  // Wire the two together in-process. Over a network you would pipe sockets instead.\n  const toReader = writer.replicate(true)\n  const toWriter = reader.replicate(false)\n  toReader.pipe(toWriter).pipe(toReader)\n\n  const block = await reader.get(3) // waits for just this block\n  console.log('reader got:', block.toString())\n  console.log('reader has block 3?', await reader.has(3))\n  console.log('reader has block 0?', await reader.has(0))\n  console.log('reader length:', reader.length)\n\n  toReader.destroy()\n  toWriter.destroy()\n  await writer.close()\n  await reader.close()\n}\n\nmain().catch(console.error)\n",
+    "expect": "downloaded block 3\nreader got: block 3\nreader has block 3? true\nreader has block 0? false\nreader length: 5"
+  },
+  {
+    "id": "snapshot-truncate",
+    "title": "Snapshot a core, then truncate it",
+    "lead": "A snapshot keeps a read-only view while the core grows. Truncating shortens the core and starts a new fork.",
+    "code": "const Hypercore = require('hypercore')\n\nasync function main () {\n  const core = new Hypercore('./session-core')\n  await core.ready()\n  await core.append(['one', 'two', 'three'])\n\n  const snap = core.snapshot()\n  await snap.ready()\n  await core.append('four')\n  console.log('core length:', core.length, 'snapshot length:', snap.length)\n\n  console.log('fork before:', core.fork)\n  await core.truncate(2)\n  console.log('length after truncate:', core.length, 'fork after:', core.fork)\n\n  await snap.close()\n  await core.close()\n}\n\nmain().catch(console.error)\n",
+    "expect": "core length: 4 snapshot length: 3\nfork before: 0\nlength after truncate: 2 fork after: 1"
+  },
+  {
+    "id": "encryption",
+    "title": "Encrypt blocks on disk",
+    "lead": "Pass an encryption key and blocks are stored encrypted. Reads decrypt them with the same key.",
+    "code": "const Hypercore = require('hypercore')\nconst crypto = require('crypto')\n\nasync function main () {\n  const key = crypto.randomBytes(32)\n  const core = new Hypercore('./secret-core', { encryption: { key } })\n  await core.ready()\n  await core.append(Buffer.from('only readable with the key'))\n  console.log((await core.get(0)).toString())\n  await core.close()\n}\n\nmain().catch(console.error)\n",
+    "expect": "only readable with the key"
+  }
+]

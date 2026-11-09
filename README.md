@@ -1,59 +1,31 @@
-# Hypercore Learning Website
+# Learn Hypercore
 
-## 📌 Overview  
-This repository contains a structured and comprehensive educational resource for **Hypercore**, a high-performance distributed log designed for peer-to-peer applications.  
+An unofficial learning site for [Hypercore](https://github.com/holepunchto/hypercore), the secure, distributed append-only log. Not affiliated with Holepunch.
 
-The goal of this website is to help developers and researchers understand **Hypercore’s architecture, features, and real-world applications** through clear explanations, examples, and technical deep dives.
+The home page is a live Merkle tree: append blocks, select one to see the hashes that verify it, forge one to see the signature check fail. The other pages cover the basics, the README's five features, getting started, a short API reference, runnable examples and advanced topics.
 
----
+## Run it
 
-## 🚀 Features  
-- **Beginner to Advanced Learning** – Covers everything from basic concepts to advanced Hypercore topics.  
-- **Hands-on Examples** – Code snippets and real-world applications to demonstrate Hypercore in action.  
-- **API Reference** – A structured and easy-to-navigate guide to Hypercore’s API methods.  
-- **Step-by-Step Guides** – Helps users get started quickly with installation and best practices.  
-- **Modular & Expandable** – Content is continuously updated and open for contributions.  
+```bash
+npx serve .      # or: python3 -m http.server
+```
 
----
+Open the printed URL. Opening `index.html` directly will not work, because the data is loaded with `fetch`.
 
-## 📚 Website Structure  
-The website is divided into several sections to make learning as smooth as possible:
+## How it is checked
 
-- **Home** – Introduction to Hypercore and its significance.  
-- **Basic Concepts** – Foundational knowledge to get started.  
-- **Features** – A deep dive into Hypercore’s key capabilities.  
-- **Getting Started** – Setup instructions and first steps.  
-- **API Reference** – Detailed documentation of Hypercore’s API.  
-- **Examples** – Real-world use cases and implementations.  
-- **Advanced Topics** – More technical insights and optimizations.  
-- **About** – Information on the website’s mission and contributions.  
-
----
-
-## 🔧 Installation & Running Locally  
-If you'd like to contribute or run the site locally, follow these steps:
-
-### 1️⃣ Clone the Repository  
-```sh
-git clone https://github.com/your-username/hypercore-website.git
-cd hypercore-website
-2️⃣ Install Dependencies (If Using a Static Site Generator)
+```bash
 npm install
-3️⃣ Start the Development Server
-sh
-Copy
-Edit
-npm run dev
-or simply open index.html in a browser if it's a static site.
+npm run check
+```
 
-##🤝 Contributing
-We welcome contributions! If you’d like to improve the website, fix typos, or add new examples:
+`scripts/check.mjs` fails the build if:
 
-##Fork the repository.
-Create a new branch (feature/my-improvement).
-Commit your changes with clear messages.
-Submit a pull request and wait for review.
-Your contributions help make this a valuable resource for the community!
+- an internal link points nowhere, a page requests an external font or script, or a banned phrase appears;
+- an example in `data/examples.json` errors against the pinned hypercore, or prints something other than the output shown on the page (`npm run check:update` rewrites that output from a real run);
+- a method, property or constant in `data/api.json` is missing from a real core;
+- the demo's printed numbers (proof lengths, changed fingerprints) differ from the tree logic in `assets/merkle.js`.
 
-##📄 License
-This project is open-source and licensed under the MIT License.
+The version the site was checked against is in `data/verified.json`. The demo uses SHA-256 so it runs in a browser; Hypercore uses BLAKE2b.
+
+Design decisions and the review rounds are in [DESIGN-LOG.md](DESIGN-LOG.md).

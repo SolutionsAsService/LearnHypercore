@@ -2,204 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hypercore Documentation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get started | Learn Hypercore</title>
+  <meta name="description" content="Install Hypercore and run your first core in a few minutes.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-  <header>
-    <h1>Hypercore Documentation</h1>
-    <p>Secure, Distributed Append-Only Log for Large Datasets &amp; Real-Time Data</p>
-  </header>
-  
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="basics.html">Basic Concepts</a></li>
-      <li><a href="features.html">Features</a></li>
-      <li><a href="started.html">Getting Started</a></li>
-      <li><a href="api.html">API Reference</a></li>
-      <li><a href="examples.html">Examples</a></li>
-      <li><a href="advanced.html">Advanced</a></li>
-      <li><a href="about.html">About</a></li>
-    </ul>
-  </nav>
-  
-  <main>
-    <!-- Home Section -->
-    <section id="home">
-      <h2>Welcome to Hypercore</h2>
-      <p>
-        Hypercore is a secure, distributed append-only log built for sharing large datasets and streams of real-time data.
-        Designed to be fast, reliable, and secure, Hypercore leverages signed Merkle trees to ensure data integrity while enabling sparse replication.
-      </p>
-      <p>
-        Whether you are building peer-to-peer applications, real-time data streaming systems, or distributed storage networks, Hypercore provides a robust foundation with a modular design that excels in performance and security.
-      </p>
-    </section>
-    
-    <!-- Features Section -->
-    <section id="features">
-      <h2>Key Features</h2>
-      <ul>
-        <li><strong>Sparse Replication:</strong> Only download the data you are interested in, reducing bandwidth and storage usage.</li>
-        <li><strong>Realtime Updates:</strong> Receive live updates to the log as new data is appended.</li>
-        <li><strong>High Performance:</strong> Optimized I/O performance with a simple flat file structure.</li>
-        <li><strong>Secure Integrity:</strong> Uses signed Merkle trees for verifying log integrity in real time.</li>
-        <li><strong>Modular Design:</strong> Focused on distributing a stream of data, making it easy to integrate into diverse applications.</li>
-        <li><strong>Advanced Features:</strong> Supports on-disk encryption, write-ahead logs, and multiple views via session and snapshot methods.</li>
-      </ul>
-    </section>
-    
-    <!-- Installation Section -->
-    <section id="installation">
-      <h2>Installation</h2>
-      <p>Install Hypercore using npm:</p>
-      <pre><code>npm install hypercore</code></pre>
-      <p>
-        Hypercore is designed to be flexible with its storage options. By default, it uses <code>random-access-file</code> for disk storage,
-        but you can easily configure it to use in-memory storage or custom storage backends.
-      </p>
-      <p>
-        Example using in-memory storage:
-      </p>
-      <pre><code>const Hypercore = require('hypercore')
-const RAM = require('random-access-memory')
-const core = new Hypercore((filename) => new RAM())</code></pre>
-    </section>
-    
-    <!-- API Reference Section -->
-    <section id="api">
-      <h2>API Reference</h2>
-      <p>
-        The Hypercore API provides a variety of methods for managing and interacting with the append-only log.
-        Below is an overview of the key API methods:
-      </p>
-      <h3>Creating a Hypercore Instance</h3>
-      <pre><code>const Hypercore = require('hypercore')
-const core = new Hypercore('./data-directory', /* optional key */, {
-  createIfMissing: true,
-  overwrite: false,
-  sparse: true,
-  valueEncoding: 'binary', // can be 'json' or 'utf-8'
-  // Additional options...
-})</code></pre>
-      
-      <h3>Appending Data</h3>
-      <p>Append a block or an array of blocks to the core:</p>
-      <pre><code>// Append a single block
-await core.append(Buffer.from('I am a block of data'))
+<body data-page="started">
+<main id="main" class="wrap page prose">
+  <h1>Get started</h1>
+  <p class="stamp"></p>
+  <p class="lede">Install it, run one file, read what it printed.</p>
 
-// Append multiple blocks as a batch
-await core.append([
-  Buffer.from('batch block 1'),
-  Buffer.from('batch block 2')
-])</code></pre>
-      
-      <h3>Retrieving Data</h3>
-      <pre><code>// Get a block by index
-const block = await core.get(42)
+  <h2>What you need</h2>
+  <p>Node.js (download it from <a href="https://nodejs.org">nodejs.org</a>; it comes with <code>npm</code>) and a terminal. The examples here were run on Node <span data-fig="node">see data/verified.json</span>. Check yours with <code>node --version</code>. If you cannot install anything, the <a href="index.html">interactive tree on the home page</a> runs in your browser and teaches the same idea.</p>
 
-// With options (e.g., timeout, wait, valueEncoding)
-const blockWithOptions = await core.get(43, { timeout: 5000, wait: true })</code></pre>
-      
-      <h3>Other Key Methods</h3>
-      <ul>
-        <li><code>core.has(start, [end])</code>: Check if blocks are available.</li>
-        <li><code>core.update([options])</code>: Wait for new data or peer updates.</li>
-        <li><code>core.seek(byteOffset, [options])</code>: Locate the block containing a specific byte offset.</li>
-        <li><code>core.createReadStream([options])</code>: Create a stream for reading blocks.</li>
-        <li><code>core.createByteStream([options])</code>: Create a byte stream for reading a range of bytes.</li>
-        <li><code>core.clear(start, [end], [options])</code>: Clear cached blocks.</li>
-        <li><code>core.truncate(newLength, [forkId])</code>: Truncate the log to a new length.</li>
-        <li><code>core.treeHash([length])</code>: Get the Merkle tree hash at a given length.</li>
-        <li><code>core.download([range])</code>: Initiate download of a range of blocks.</li>
-        <li><code>core.session([options])</code>: Create a new session sharing the same core.</li>
-        <li><code>core.snapshot([options])</code>: Create a snapshot of the core at a fixed point in time.</li>
-        <li><code>core.info([options])</code>: Retrieve metadata about the core.</li>
-        <li><code>core.close()</code>: Close the core and release resources.</li>
-        <li><code>core.ready()</code>: Wait for the core to be fully initialized.</li>
-        <li><code>core.replicate(isInitiator, [options])</code>: Create a replication stream for peer-to-peer synchronization.</li>
-        <li><code>core.findingPeers()</code>: Hook for managing peer discovery.</li>
-      </ul>
-    </section>
-    
-    <!-- Examples Section -->
-    <section id="examples">
-      <h2>Usage Examples</h2>
-      <h3>Basic Read/Write Example</h3>
-      <pre><code>const Hypercore = require('hypercore')
-const core = new Hypercore('./data')
+  <h2>1. Install</h2>
+  <div class="codeblock"><pre><code>mkdir my-core &amp;&amp; cd my-core
+npm init -y
+npm install hypercore</code></pre></div>
+  <p>If your shell rejects <code>&amp;&amp;</code>, run those two commands one at a time.</p>
+  <p>The examples on this site were run on Node <span data-fig="node"></span> with hypercore <span data-fig="version">see data/verified.json</span>. The README at that version still says the latest release is Hypercore 10, while the npm <code>latest</code> tag is 11, so check the version you installed with <code>npm ls hypercore</code>.</p>
 
-async function run() {
-  await core.ready()
-  await core.append(Buffer.from('Hello, Hypercore!'))
-  const data = await core.get(0)
-  console.log('Retrieved block:', data.toString())
-}
+  <h2>2. Run your first core</h2>
+  <p>Save this as <code>hello.js</code> and run <code>node hello.js</code>. The grey-green box shows what it printed when we ran it.</p>
+  <div data-example="first-core"></div>
 
-run().catch(console.error)
-</code></pre>
-      
-      <h3>Streaming Data Example</h3>
-      <pre><code>// Reading data using a read stream
-const stream = core.createReadStream({ start: 0, end: core.length })
-stream.on('data', (data) => {
-  console.log('Streamed data:', data.toString())
-})</code></pre>
-    </section>
-    
-    <!-- Advanced Section -->
-    <section id="advanced">
-      <h2>Advanced Topics</h2>
-      <p>
-        Hypercore also provides advanced features for enhanced functionality:
-      </p>
-      <ul>
-        <li>
-          <strong>Fork Detection &amp; Truncation:</strong>
-          The <code>truncate</code> method enables intentional forking of the log, and fork detection ensures data integrity across replicas.
-        </li>
-        <li>
-          <strong>Encryption:</strong>
-          Optional on-disk encryption for blocks can be enabled via the <code>encryptionKey</code> option.
-        </li>
-        <li>
-          <strong>Write-Ahead Log:</strong>
-          The internal storage layer uses a write-ahead log to safeguard against data corruption due to unexpected shutdowns.
-        </li>
-        <li>
-          <strong>Sessions &amp; Snapshots:</strong>
-          Use <code>core.session()</code> for managing multiple views of the same underlying core, or <code>core.snapshot()</code> to lock in a consistent view of the data.
-        </li>
-      </ul>
-      <p>
-        Note: Hypercore version 11 introduces improvements backed by RocksDB for enhanced storage and atomicity. However, the default npm tag may still reference version 10 until the transition is complete.
-      </p>
-    </section>
-    
-    <!-- About Section -->
-    <section id="about">
-      <h2>About Hypercore</h2>
-      <p>
-        Hypercore is an open-source project licensed under the MIT license. It is maintained by Holepunch and contributors around the world.
-        The project is built on the principles of secure, efficient, and distributed data sharing, making it ideal for a variety of applications,
-        from peer-to-peer networks to real-time data streaming systems.
-      </p>
-      <p>
-        For more detailed documentation, API references, and community support, visit the following resources:
-      </p>
-      <ul>
-        <li><a href="https://github.com/holepunchto/hypercore" target="_blank">GitHub Repository</a></li>
-        <li><a href="https://docs.pears.com/building-blocks/hypercore" target="_blank">Pears Documentation</a></li>
-      </ul>
-    </section>
-  </main>
-  
-  <footer>
-    <p>&copy; 2025 Hypercore Documentation. All rights reserved.</p>
-  </footer>
-  <script src="script.js"></script>
+  <h2>3. What just happened</h2>
+  <ul>
+    <li><code>new Hypercore('./hello-core')</code> stores the core in the directory <code>hello-core</code>. Run the file again and the length grows, because the data is still there.</li>
+    <li><code>valueEncoding: 'utf-8'</code> makes <code>get</code> return strings. Without it you get Buffers, which is the default.</li>
+    <li>Passing an array to <code>append</code> adds several blocks as a batch.</li>
+  </ul>
+
+  <h2>If an older tutorial's code fails</h2>
+  <p>Older examples create a core with an in-memory storage function, <code>new Hypercore(() =&gt; new RAM())</code>, using <code>random-access-memory</code>. The upstream README says <code>random-access-storage</code> is no longer supported, and that code crashes on version 11. Pass a directory path instead.</p>
+
+  <div class="next"><a href="features.html">&larr; Features</a><a href="examples.html">Next: more examples &rarr;</a></div>
+</main>
+<noscript><p class="notice wrap">This site loads its code examples and API list with JavaScript. The raw data is in <a href="data/examples.json">data/examples.json</a> and <a href="data/api.json">data/api.json</a>.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/static.js"></script>
 </body>
 </html>

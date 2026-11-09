@@ -2,159 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Advanced Hypercore Topics</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Link to external stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Advanced topics | Learn Hypercore</title>
+  <meta name="description" content="Forks and truncate, sessions and snapshots, encryption, replication and storage in Hypercore 11.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-  <header>
-    <h1>Advanced Hypercore Topics</h1>
-    <p>Dive deep into the sophisticated features of Hypercore to fully understand its robust, secure, and efficient data-sharing capabilities.</p>
-  </header>
-  
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="basics.html">Basic Concepts</a></li>
-      <li><a href="features.html">Features</a></li>
-      <li><a href="started.html">Getting Started</a></li>
-      <li><a href="api.html">API Reference</a></li>
-      <li><a href="examples.html">Examples</a></li>
-      <li><a href="advanced.html">Advanced</a></li>
-      <li><a href="about.html">About</a></li>
-    </ul>
-  </nav>
-  
-  <main>
-    <!-- Replication & Fork Detection -->
-    <section id="replication-fork-detection">
-      <h2>Replication Protocols &amp; Fork Detection</h2>
-      <p>
-        Hypercore’s replication mechanism is designed for highly efficient and secure peer-to-peer data sharing. At its core, the replication protocol ensures that data is distributed across multiple peers reliably. One of the key advancements is its improved fork detection. This feature actively monitors the replication process to detect when a divergence (fork) occurs in the data log.
-      </p>
-      <p>
-        <em>Technical Insight:</em> When multiple writers or network inconsistencies introduce forks, Hypercore’s protocol can quickly recognize these inconsistencies using cryptographic proofs. The use of signed Merkle trees allows peers to verify that each block is part of the original, untampered sequence, and if a fork is detected, the system can mark the divergent branch as invalid.
-      </p>
-      <p>
-        <em>Real-World Analogy:</em> Imagine a group of people collaboratively writing a shared story. If someone accidentally starts a different storyline, others will quickly notice the deviation and agree on the correct version. Hypercore’s fork detection works in a similar way to ensure that all participants see the same, authoritative story.
-      </p>
-    </section>
+<body data-page="advanced">
+<main id="main" class="wrap page prose">
+  <h1>Advanced topics</h1>
+  <p class="stamp"></p>
+  <p class="lede">What happens beyond append and get. Each topic names its source: the README, the installed code, or a run.</p>
 
-    <!-- Truncate Method & Intentional Forking -->
-    <section id="truncate-method">
-      <h2>Truncate Method &amp; Intentional Forking</h2>
-      <p>
-        The truncate method in Hypercore is a deliberate mechanism to start a new fork in the log at a specified point. This is particularly useful when you need to reset or manage the growth of the log without compromising the integrity of the historical data.
-      </p>
-      <p>
-        <em>Technical Insight:</em> Truncating updates the fork identifier and effectively creates a new branch from the specified log length. This is used extensively in systems like autobase to manage and reconcile concurrent changes without disrupting ongoing replication.
-      </p>
-      <p>
-        <em>Real-World Analogy:</em> Consider a version-controlled document where you decide to start a new revision branch from a certain page, preserving history while allowing fresh edits. Truncation in Hypercore serves a similar purpose, providing a clean slate for new data while retaining the old log as reference.
-      </p>
-    </section>
+  <h2 id="forks">Truncate and forks</h2>
+  <p><code>core.truncate(newLength)</code> shortens the core. By default it raises the core's fork id by one; you can pass the fork id you prefer, but it should only increase. The core emits a <code>truncate</code> event, locally or when a peer truncates. In the run below the fork id goes from 0 to 1.</p>
+  <div data-example="snapshot-truncate"></div>
 
-    <!-- Session & Snapshot Mechanisms -->
-    <section id="session-snapshot">
-      <h2>Session &amp; Snapshot Mechanisms</h2>
-      <p>
-        To efficiently manage resources and maintain data consistency, Hypercore introduces session and snapshot methods. These techniques allow multiple views of the same underlying data without interfering with each other.
-      </p>
-      <p>
-        <em>Technical Insight:</em> A session creates a new instance sharing the same data and metadata as the original Hypercore, which is useful when you want to isolate certain operations. A snapshot, on the other hand, locks in a view of the data at a specific point in time, ensuring that subsequent changes do not affect that view.
-      </p>
-      <p>
-        <em>Real-World Analogy:</em> Think of a snapshot like taking a photograph of a bustling city at a given moment—you preserve the exact state of affairs, regardless of future changes. A session is more like opening a new browser window to interact with the same website data, allowing parallel operations without conflict.
-      </p>
-    </section>
+  <h2 id="views">Sessions and snapshots</h2>
+  <p><code>core.session()</code> makes a new instance that shares the same underlying core; you must close every session you make. <code>core.snapshot()</code> is the same, backed by a storage snapshot, so it will not append or truncate. In the run above the snapshot stays at length 3 while the core grows to 4.</p>
+  <p>The README also describes <em>atoms</em>, which let sessions make atomic changes across several cores. We have not run an atom example here, so read it in the <a href="https://github.com/holepunchto/hypercore#const-session--coresessionoptions">README</a> before relying on it.</p>
 
-    <!-- Write-Ahead Log & Data Integrity -->
-    <section id="write-ahead-log">
-      <h2>Write-Ahead Log &amp; Data Integrity</h2>
-      <p>
-        To safeguard against data loss due to unexpected shutdowns or power failures, Hypercore employs a write-ahead log (WAL) in its storage layer. The WAL logs changes before they are committed to the main data structure, providing a recovery mechanism in case of failures.
-      </p>
-      <p>
-        <em>Technical Insight:</em> By recording operations in a write-ahead log, Hypercore ensures that even if a crash occurs, the system can replay the log to reconstruct the last known good state of the data. This approach minimizes the risk of corruption and enhances overall data integrity.
-      </p>
-      <p>
-        <em>Real-World Analogy:</em> Picture an accountant who maintains a ledger of every transaction before updating the official records. If an error occurs, the ledger serves as a backup to restore the accurate financial state. Similarly, the write-ahead log in Hypercore acts as a safeguard to prevent data loss.
-      </p>
-    </section>
+  <h2 id="encryption">Block encryption</h2>
+  <p>Pass <code>encryption: { key }</code> with a 32-byte key and blocks are stored encrypted; <code>get</code> decrypts them. Keep the key: the example generates a random one, so the data is unreadable on a later run. <code>core.padding</code> is 0 unless block encryption is on.</p>
+  <div data-example="encryption"></div>
 
-    <!-- On-Disk Encryption & Security -->
-    <section id="on-disk-encryption">
-      <h2>On-Disk Encryption &amp; Security</h2>
-      <p>
-        Security is paramount in distributed systems. Hypercore offers optional on-disk encryption for its stored blocks, complementing the secure transport encryption already in place.
-      </p>
-      <p>
-        <em>Technical Insight:</em> On-disk encryption ensures that data remains protected even if the storage medium is compromised. Encryption keys are used to secure each block, so that unauthorized access does not result in readable data.
-      </p>
-      <p>
-        <em>Real-World Analogy:</em> Think of storing valuable documents in a safe deposit box. Even if someone manages to access the box, they would need the correct key to open it and read the contents. This added layer of encryption in Hypercore guarantees that your data is secure both in transit and at rest.
-      </p>
-    </section>
+  <h2 id="replication">Replication and finding peers</h2>
+  <p><code>core.replicate(isInitiator)</code> returns a stream you pipe to another core's stream; one side is the initiator, the other is not. Over a network you pipe sockets. The README names Hyperswarm as the usual way to find peers, and Corestore for managing many cores. <code>core.discoveryKey</code> is what you announce, because it does not reveal the key that verifies the data. The <a href="examples.html#sparse-replication">replication example</a> shows two cores in one process.</p>
 
-    <!-- Advanced Storage & Performance Optimizations -->
-    <section id="storage-performance">
-      <h2>Advanced Storage &amp; Performance Optimizations</h2>
-      <p>
-        Hypercore is designed with performance in mind. Its simple flat file structure minimizes I/O operations, and it supports various storage backends to cater to different application needs. These optimizations ensure rapid data access and efficient replication even under heavy loads.
-      </p>
-      <p>
-        <em>Technical Insight:</em> With support for storage backends like random-access-file and integration with systems such as RocksDB, Hypercore can be tailored for both in-memory and persistent storage environments. Techniques like sparse replication and prefetching further boost performance.
-      </p>
-      <p>
-        <em>Real-World Analogy:</em> Imagine a state-of-the-art library where books are organized for maximum efficiency—only the required volumes are retrieved when needed, and multiple copies ensure that popular titles are always available. Hypercore’s advanced storage strategies work similarly to deliver high-speed performance.
-      </p>
-    </section>
+  <h2 id="storage">Storage</h2>
+  <p>Give the constructor a directory. You can also pass a Hypercore Storage instance or use a Corestore. <code>random-access-storage</code> is no longer supported, so older tutorials that pass a storage function will fail.</p>
 
-    <!-- Networking, Peer Discovery & Integration -->
-    <section id="networking">
-      <h2>Networking, Peer Discovery &amp; Integration</h2>
-      <p>
-        Hypercore’s secure transport protocol is built for a peer-to-peer environment, enabling seamless data exchange among nodes. It integrates well with other components such as Hyperswarm for robust peer discovery and Corestore for managing multiple Hypercores.
-      </p>
-      <p>
-        <em>Technical Insight:</em> Leveraging secure transport protocols, Hypercore ensures that data is exchanged only with verified peers. This integration with peer discovery systems minimizes latency and enhances scalability, making it ideal for decentralized applications.
-      </p>
-      <p>
-        <em>Real-World Analogy:</em> Think of a network of secure couriers who only deliver messages to trusted recipients. Each courier verifies the identity of the sender and recipient, ensuring that the message remains confidential and authentic. This is the essence of Hypercore’s networking and peer discovery strategy.
-      </p>
-    </section>
+  <h2 id="limits">Block size</h2>
+  <p>The suggested maximum block size is <code>Hypercore.MAX_SUGGESTED_BLOCK_SIZE</code>, 15 MB, so blocks replicate smoothly. For larger data, append many blocks.</p>
 
-    <!-- Integration with Ecosystem Tools -->
-    <section id="integration">
-      <h2>Integration with Ecosystem Tools</h2>
-      <p>
-        Hypercore is not a standalone solution; it’s part of a broader ecosystem that includes tools like Hyperbee, Hyperdrive, and Autobase. These integrations allow developers to build complex, distributed systems with ease.
-      </p>
-      <p>
-        <em>Technical Insight:</em> By serving as the fundamental building block for distributed data sharing, Hypercore can be combined with other specialized modules. For instance, Hyperbee provides a key-value store interface, while Autobase handles concurrent data updates. This modularity offers unparalleled flexibility.
-      </p>
-      <p>
-        <em>Real-World Analogy:</em> Consider a multi-tool gadget where each tool has its own specialized function but can be seamlessly integrated to solve complex problems. Hypercore and its ecosystem tools work together like components in a high-performance machine, each contributing to a comprehensive solution.
-      </p>
-    </section>
-    
-    <!-- Conclusion -->
-    <section id="conclusion">
-      <h2>Conclusion</h2>
-      <p>
-        Advanced Hypercore topics reveal a system engineered not only for secure and efficient data sharing but also for adaptability and resilience in dynamic environments.
-        From sophisticated replication protocols to robust security measures and seamless integration with a broader ecosystem, Hypercore empowers developers to build next-generation peer-to-peer applications.
-      </p>
-      <p>
-        Explore the other sections of our documentation to gain a complete understanding of Hypercore’s capabilities, and see how its advanced features can be tailored to your project’s unique requirements.
-      </p>
-    </section>
-  </main>
-  
-  <footer>
-    <p>&copy; 2025 Hypercore Documentation. All rights reserved.</p>
-  </footer>
-  <script src="script.js"></script>
+  <div class="next"><a href="examples.html">&larr; Examples</a><a href="api.html">Next: the API &rarr;</a></div>
+</main>
+<noscript><p class="notice wrap">This site loads its code examples and API list with JavaScript. The raw data is in <a href="data/examples.json">data/examples.json</a> and <a href="data/api.json">data/api.json</a>.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/static.js"></script>
 </body>
 </html>

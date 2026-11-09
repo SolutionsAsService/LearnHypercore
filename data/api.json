@@ -1,0 +1,247 @@
+[
+  {
+    "group": "Open and close",
+    "items": [
+      {
+        "kind": "method",
+        "name": "ready",
+        "sig": "await core.ready()",
+        "text": "Wait for the core to open. Properties such as core.length are populated afterwards. You rarely need it, because every method waits for it itself."
+      },
+      {
+        "kind": "method",
+        "name": "close",
+        "sig": "await core.close()",
+        "text": "Close the core and release its resources. Close every session you open."
+      }
+    ]
+  },
+  {
+    "group": "Write",
+    "items": [
+      {
+        "kind": "method",
+        "name": "append",
+        "sig": "const { length, byteLength } = await core.append(block)",
+        "text": "Append one block, or an array of blocks as a batch. Returns the new length and byte length."
+      },
+      {
+        "kind": "method",
+        "name": "createWriteStream",
+        "sig": "const ws = core.createWriteStream()",
+        "text": "A writable stream where each chunk becomes a block."
+      },
+      {
+        "kind": "method",
+        "name": "truncate",
+        "sig": "await core.truncate(newLength)",
+        "text": "Shorten the core. By default this raises the fork id by one."
+      },
+      {
+        "kind": "method",
+        "name": "clear",
+        "sig": "await core.clear(start, [end])",
+        "text": "Clear stored blocks from your local copy to reclaim space. Peers you are connected to are told you no longer have them."
+      }
+    ]
+  },
+  {
+    "group": "Read",
+    "items": [
+      {
+        "kind": "method",
+        "name": "get",
+        "sig": "const block = await core.get(index, [options])",
+        "text": "Get a block. If it is not local, wait for it to download. Options include wait, timeout and valueEncoding."
+      },
+      {
+        "kind": "method",
+        "name": "has",
+        "sig": "const has = await core.has(start, [end])",
+        "text": "True if the core holds every block from start up to end."
+      },
+      {
+        "kind": "method",
+        "name": "count",
+        "sig": "const n = await core.count(start, end)",
+        "text": "How many blocks in that range are stored locally."
+      },
+      {
+        "kind": "method",
+        "name": "seek",
+        "sig": "const [index, offset] = await core.seek(byteOffset)",
+        "text": "Find the block that contains a byte offset."
+      },
+      {
+        "kind": "method",
+        "name": "createReadStream",
+        "sig": "const stream = core.createReadStream([options])",
+        "text": "A readable stream of blocks."
+      },
+      {
+        "kind": "method",
+        "name": "createByteStream",
+        "sig": "const bs = core.createByteStream([options])",
+        "text": "A readable stream over a range of bytes, with byteOffset and byteLength options."
+      },
+      {
+        "kind": "method",
+        "name": "update",
+        "sig": "const updated = await core.update()",
+        "text": "Wait for the core to learn of a new length from peers."
+      },
+      {
+        "kind": "method",
+        "name": "info",
+        "sig": "const info = await core.info()",
+        "text": "Information about the core, such as its size in bytes."
+      }
+    ]
+  },
+  {
+    "group": "Share",
+    "items": [
+      {
+        "kind": "method",
+        "name": "replicate",
+        "sig": "const stream = core.replicate(isInitiator)",
+        "text": "Make a replication stream. Pipe it to another core's stream, one side as initiator and the other not."
+      },
+      {
+        "kind": "method",
+        "name": "download",
+        "sig": "const range = core.download({ start, end })",
+        "text": "Ask for a range of blocks, or a list with { blocks: [4, 9, 7] }. Await range.done() for a finite range."
+      },
+      {
+        "kind": "method",
+        "name": "findingPeers",
+        "sig": "const done = core.findingPeers()",
+        "text": "Tell the core you are looking for peers. Call done() when a discovery round ends."
+      }
+    ]
+  },
+  {
+    "group": "Views and integrity",
+    "items": [
+      {
+        "kind": "method",
+        "name": "session",
+        "sig": "const s = core.session()",
+        "text": "A new instance sharing the same underlying core. Close it when done."
+      },
+      {
+        "kind": "method",
+        "name": "snapshot",
+        "sig": "const snap = core.snapshot()",
+        "text": "Like a session, but backed by a storage snapshot: it will not append or truncate."
+      },
+      {
+        "kind": "method",
+        "name": "treeHash",
+        "sig": "const hash = await core.treeHash([length])",
+        "text": "The Merkle tree hash of the core at a length, by default its current length."
+      }
+    ]
+  },
+  {
+    "group": "Properties",
+    "items": [
+      {
+        "kind": "property",
+        "name": "key",
+        "sig": "core.key",
+        "text": "Buffer holding the public key that identifies the core."
+      },
+      {
+        "kind": "property",
+        "name": "discoveryKey",
+        "sig": "core.discoveryKey",
+        "text": "A key derived from the public key. It finds peers without leaking the key that verifies the data."
+      },
+      {
+        "kind": "property",
+        "name": "length",
+        "sig": "core.length",
+        "text": "How many blocks the core holds."
+      },
+      {
+        "kind": "property",
+        "name": "fork",
+        "sig": "core.fork",
+        "text": "The current fork id. It increases when the core is truncated."
+      },
+      {
+        "kind": "property",
+        "name": "writable",
+        "sig": "core.writable",
+        "text": "True if you can append to or truncate this core."
+      },
+      {
+        "kind": "property",
+        "name": "readable",
+        "sig": "core.readable",
+        "text": "True if you can read from this core. False after closing."
+      },
+      {
+        "kind": "property",
+        "name": "contiguousLength",
+        "sig": "core.contiguousLength",
+        "text": "How many blocks are available without a gap from the start."
+      },
+      {
+        "kind": "property",
+        "name": "peers",
+        "sig": "core.peers",
+        "text": "The peers currently connected to this core."
+      },
+      {
+        "kind": "static",
+        "name": "MAX_SUGGESTED_BLOCK_SIZE",
+        "sig": "Hypercore.MAX_SUGGESTED_BLOCK_SIZE",
+        "text": "The suggested maximum block size, 15 MB (15,728,640 bytes), so blocks replicate smoothly."
+      }
+    ]
+  },
+  {
+    "group": "Events",
+    "items": [
+      {
+        "kind": "event",
+        "name": "append",
+        "sig": "core.on('append', ...)",
+        "text": "The core got a new length, locally or from a peer."
+      },
+      {
+        "kind": "event",
+        "name": "truncate",
+        "sig": "core.on('truncate', ancestors, forkId)",
+        "text": "The core was truncated, locally or by a peer."
+      },
+      {
+        "kind": "event",
+        "name": "download",
+        "sig": "core.on('download', index, byteLength, peer)",
+        "text": "A block arrived from a peer."
+      },
+      {
+        "kind": "event",
+        "name": "upload",
+        "sig": "core.on('upload', index, byteLength, peer)",
+        "text": "A block was sent to a peer."
+      },
+      {
+        "kind": "event",
+        "name": "peer-add",
+        "sig": "core.on('peer-add', ...)",
+        "text": "A new peer connected."
+      },
+      {
+        "kind": "event",
+        "name": "peer-remove",
+        "sig": "core.on('peer-remove', ...)",
+        "text": "A peer disconnected."
+      }
+    ]
+  }
+]

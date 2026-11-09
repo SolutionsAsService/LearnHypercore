@@ -21,7 +21,7 @@ cd LearnHypercore
 npx serve .
 ```
 
-Then open the printed localhost URL. Keep links relative so the site still deploys from any host.
+Then open the printed localhost URL. Before sending a change, run `npm install && npm run check`. Keep links relative so the site still deploys from any host.
 
 ## Making a change
 

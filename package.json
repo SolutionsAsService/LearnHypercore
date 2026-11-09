@@ -1,0 +1,8 @@
+{
+  "name": "learnhypercore",
+  "private": true,
+  "description": "Learn Hypercore: a static learning site whose code examples are executed by scripts/check.mjs",
+  "scripts": { "check": "node scripts/check.mjs", "check:update": "node scripts/check.mjs --update" },
+  "devDependencies": { "hypercore": "11.40.3" },
+  "license": "MIT"
+}

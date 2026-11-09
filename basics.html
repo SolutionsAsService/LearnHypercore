@@ -2,93 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hypercore - Secure Distributed Data Sharing</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The basics | Learn Hypercore</title>
+  <meta name="description" content="What a Hypercore is: an append-only log of numbered blocks, identified by a public key, verified by a signed Merkle tree.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-  <header>
-    <h1>Welcome to Hypercore</h1>
-  </header>
+<body data-page="basics">
+<main id="main" class="wrap page prose">
+  <h1>The basics</h1>
+  <p class="stamp"></p>
+  <p class="lede">Hypercore is a secure, distributed append-only log, built for sharing large datasets and streams of real-time data.</p>
 
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="basics.html">Basic Concepts</a></li>
-      <li><a href="features.html">Features</a></li>
-      <li><a href="started.html">Getting Started</a></li>
-      <li><a href="api.html">API Reference</a></li>
-      <li><a href="examples.html">Examples</a></li>
-      <li><a href="advanced.html">Advanced</a></li>
-      <li><a href="about.html">About</a></li>
-    </ul>
-  </nav>
-  
-  <main>
-    <section>
-      <h2>What is Hypercore?</h2>
-      <p>
-        Hypercore is a technology designed to help you share and manage large amounts of data safely and quickly. Think of it like a digital notebook that only adds new pages at the end—once a page is written, it cannot be changed. This “append-only log” makes sure that every piece of data is recorded in order and remains unchanged.
-      </p>
-      <p>
-        It’s built for sharing large datasets and real-time information between many computers without needing a central server. With Hypercore, data is distributed, which means it’s stored and shared among multiple devices, making your applications both fast and resilient.
-      </p>
-    </section>
-    
-    <section>
-      <h2>How Does It Work?</h2>
-      <p>
-        Imagine you and a group of friends are keeping a joint diary where everyone can add entries, but no one can erase or alter what’s already written. Every time someone adds an entry, it’s permanently recorded at the end of the diary. Hypercore works similarly: new data is always added to the end, ensuring a reliable and chronological record.
-      </p>
-      <p>
-        In addition, Hypercore uses a secure transport protocol. This is like sending your diary pages in a locked envelope, so even if someone intercepts it, they can’t tamper with or understand the content. This secure channel is essential for keeping your data safe while sharing it with others.
-      </p>
-    </section>
-    
-    <section>
-      <h2>Key Features Explained in Simple Terms</h2>
-      <ul>
-        <li>
-          <strong>Improved Fork Detection:</strong> Imagine if your diary accidentally split into two versions. Fork detection helps identify these splits and ensures everyone is following the same version, keeping the shared record consistent.
-        </li>
-        <li>
-          <strong>Optional On-Disk Encryption:</strong> Think of this as putting your diary inside a safe. Even if someone gets access to the physical diary (or data), they won’t be able to read it without the key.
-        </li>
-        <li>
-          <strong>Write-Ahead Log:</strong> Before any new entry is permanently added, a quick note is made to remember what is about to happen. This way, if there’s a sudden power loss or a system crash, you won’t lose the latest information.
-        </li>
-        <li>
-          <strong>Session and Snapshot Methods:</strong> These features let you view the same set of data in different ways or at different times without disturbing the original log. It’s like having multiple copies of your diary, each capturing the state of things at a specific moment.
-        </li>
-        <li>
-          <strong>Truncate Method:</strong> Sometimes, you might want to start a new chapter or edition of your diary. The truncate method allows you to deliberately cut off the old log at a certain point and begin a fresh version, which is especially useful for managing updates in complex applications.
-        </li>
-      </ul>
-    </section>
-    
-    <section>
-      <h2>Why Use Hypercore?</h2>
-      <p>
-        Hypercore is ideal for building applications that require fast, secure, and scalable data sharing, such as real-time chats, collaborative tools, or data monitoring systems. Its design ensures that your data is kept safe, remains consistent, and is easily distributed across multiple devices.
-      </p>
-      <p>
-        By using Hypercore, developers can create peer-to-peer applications without relying on a central server, which enhances privacy, improves performance, and reduces the risk of a single point of failure.
-      </p>
-    </section>
-    
-    <section>
-      <h2>Getting Started</h2>
-      <p>
-        Ready to explore Hypercore further? Visit the official documentation or check out the GitHub repository to dive into technical details, tutorials, and community discussions.
-      </p>
-      <p>
-        <a href="https://github.com/holepunchto/hypercore" target="_blank">View Hypercore on GitHub</a>
-      </p>
-    </section>
-  </main>
-  
-  <footer>
-    <p>&copy; 2025 Hypercore Documentation. All rights reserved.</p>
-  </footer>
-  <script src="script.js"></script>
+  <h2>A log of numbered blocks</h2>
+  <p>Think of a receipt roll: you can add to the end, but you cannot slip a new receipt into the middle. A Hypercore, usually called a <em>core</em>, is a list of <strong>blocks</strong> like that. Each block is a chunk of bytes you chose: a message, a row, a slice of a file. Blocks are numbered from 0 in the order they were added, and <code>core.length</code> says how many there are. You add to the end with <code>core.append()</code>.</p>
+  <div data-example="first-core"></div>
+
+  <h2>Words you will meet</h2>
+  <p>These are used on the rest of the site, so they come first.</p>
+  <table class="t">
+    <thead><tr><th>Word</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>block</td><td>One entry in the log. Read it with <code>core.get(index)</code>.</td></tr>
+      <tr><td>key</td><td>The public key that identifies a core. Anyone who has it can read and verify the core. <code>core.key</code></td></tr>
+      <tr><td>discovery key</td><td>A key derived from the public key. It finds peers without revealing the key that verifies the data. <code>core.discoveryKey</code></td></tr>
+      <tr><td>writable</td><td>Whether you hold the key pair that lets you append. A reader that has only the public key is not writable.</td></tr>
+      <tr><td>fork</td><td>A counter that goes up when a core is truncated. It starts at 0.</td></tr>
+      <tr><td>peer</td><td>Another copy of the core you are connected to.</td></tr>
+      <tr><td>hash</td><td>A short fingerprint of some data. Change one byte of the data and the fingerprint changes completely.</td></tr>
+      <tr><td>root</td><td>The fingerprint of a whole branch of blocks, made by hashing smaller fingerprints together. A log has one or more roots.</td></tr>
+      <tr><td>signature</td><td>Proof, made with the core's secret key, that the roots are the writer's. Anyone with the public key can check it.</td></tr>
+      <tr><td>truncate</td><td>Cut a core back to a shorter length. The fork id goes up so peers can tell the history changed.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How a reader trusts a block</h2>
+  <p>Every block is hashed. Hashes are combined in pairs, up a tree, into a small set of root hashes, and the roots are signed by the core's key pair. A reader that has the public key can check any block it receives against the signed roots, using a few hashes from the tree instead of the whole log. The <a href="index.html">home page</a> lets you build that tree and watch it work.</p>
+
+  <h2>What "append-only" does and does not mean</h2>
+  <p>Blocks are not edited in place. You add at the end. The API does let a writer <code>truncate</code> a core to a shorter length, which raises the fork id, and anyone can <code>clear</code> blocks from their own local copy to save space. So the guarantee is not that data can never disappear from a machine. It is that what a reader accepts has been verified against the signed roots.</p>
+
+  <div class="next"><span></span><a href="features.html">Next: the features &rarr;</a></div>
+</main>
+<noscript><p class="notice wrap">This site loads its code examples and API list with JavaScript. The raw data is in <a href="data/examples.json">data/examples.json</a> and <a href="data/api.json">data/api.json</a>.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/static.js"></script>
 </body>
 </html>

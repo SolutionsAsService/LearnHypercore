@@ -2,98 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>About This Website</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About this site | Learn Hypercore</title>
+  <meta name="description" content="Who runs this site, how its claims and code are checked, and how to report a mistake.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
-  <header>
-    <h1>About This Website</h1>
-  </header>
+<body data-page="about">
+<main id="main" class="wrap page prose">
+  <h1>About this site</h1>
+  <p class="stamp"></p>
+  <p class="lede">An unofficial learning site for Hypercore. It is not affiliated with Holepunch, the authors of Hypercore.</p>
 
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="basics.html">Basic Concepts</a></li>
-      <li><a href="features.html">Features</a></li>
-      <li><a href="started.html">Getting Started</a></li>
-      <li><a href="api.html">API Reference</a></li>
-      <li><a href="examples.html">Examples</a></li>
-      <li><a href="advanced.html">Advanced</a></li>
-      <li><a href="about.html">About</a></li>
-    </ul>
-  </nav>
+  <h2>What is checked, and how</h2>
+  <ul>
+    <li><strong>Code.</strong> Every example runs against the pinned hypercore version before the site is published, and the output printed under it is the output of that run. <code>node scripts/check.mjs</code> fails if an example errors or prints something else.</li>
+    <li><strong>Names.</strong> Every method, property and static value on the API page is looked up on a real core by the same script.</li>
+    <li><strong>Links.</strong> The script fails on any internal link that points nowhere, on any external font or script request, and on a short list of phrases the first review of this site turned up.</li>
+    <li><strong>Claims.</strong> Statements about what Hypercore does come from the upstream README, from the installed package source, or from a run. Where the site says "the README says", it has not tested that claim.</li>
+  </ul>
 
-  <main>
-    <section>
-      <h2>Our Mission</h2>
-      <p>
-        This website is dedicated to providing a comprehensive, structured, and accessible resource for learning about Hypercore.
-        Whether you're a beginner looking for an introduction or an experienced developer diving into advanced topics, our goal is to 
-        make the learning process as smooth and insightful as possible.
-      </p>
-    </section>
+  <h2>What is not covered</h2>
+  <p>The ecosystem modules (Hyperswarm, Corestore, Hyperbee, Hyperdrive, Autobase), networking across machines, performance and the wire protocol. Atoms are described in the README but not run here. The home page demo is a simulation of the tree: it uses SHA-256 so it can run in a browser, where Hypercore uses BLAKE2b.</p>
 
-    <section>
-      <h2>What You’ll Find Here</h2>
-      <p>
-        The website is structured into different sections, each designed to guide you through Hypercore’s concepts, features, 
-        and real-world applications:
-      </p>
-      <ul>
-        <li><strong>Home:</strong> An overview of Hypercore and why it's important.</li>
-        <li><strong>Basic Concepts:</strong> A foundational guide to understanding Hypercore's core principles.</li>
-        <li><strong>Features:</strong> A deep dive into Hypercore’s key capabilities and how they work.</li>
-        <li><strong>Getting Started:</strong> Step-by-step instructions to set up and begin using Hypercore.</li>
-        <li><strong>API Reference:</strong> A detailed documentation of Hypercore’s API methods and usage.</li>
-        <li><strong>Examples:</strong> Practical examples showcasing Hypercore in real-world applications.</li>
-        <li><strong>Advanced:</strong> More technical topics for users looking to optimize and extend Hypercore’s functionality.</li>
-        <li><strong>About:</strong> (This page!) Information about the purpose and development of this site.</li>
-      </ul>
-    </section>
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://github.com/holepunchto/hypercore">Hypercore on GitHub</a>, README and source</li>
+    <li><a href="https://docs.pears.com/building-blocks/hypercore">Pears documentation</a></li>
+  </ul>
 
-    <section>
-      <h2>Why We Built This Website</h2>
-      <p>
-        Hypercore is a powerful tool for distributed, real-time applications, but learning how to use it effectively can be 
-        overwhelming due to limited structured resources. This website aims to fill that gap by offering clear explanations, 
-        real-world examples, and an easy-to-navigate learning experience.
-      </p>
-    </section>
-
-    <section>
-      <h2>Who This Website Is For</h2>
-      <p>
-        This resource is designed for:
-      </p>
-      <ul>
-        <li>Developers new to Hypercore who need a structured introduction.</li>
-        <li>Experienced users looking for deeper insights into advanced Hypercore features.</li>
-        <li>Researchers exploring decentralized and real-time data sharing technologies.</li>
-        <li>Anyone interested in peer-to-peer data structures and distributed systems.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Open Source & Contributions</h2>
-      <p>
-        This website is a community-driven project. If you find something missing, have suggestions, or want to contribute, 
-        feel free to get involved! You can submit feedback, add new examples, or improve existing content.
-      </p>
-    </section>
-
-    <section>
-      <h2>Stay Connected</h2>
-      <p>
-        If you’d like to keep up with updates, tutorials, and community discussions, consider joining our mailing list or 
-        following our updates on GitHub.
-      </p>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Hypercore Learning. All rights reserved.</p>
-  </footer>
-  <script src="script.js"></script>
+  <h2>Mistakes</h2>
+  <p>If something here is wrong or out of date, <a href="https://github.com/SolutionsAsService/LearnHypercore/issues">open an issue</a> with the version you ran. The code is licensed MIT; see <a href="LICENSE">LICENSE</a>.</p>
+</main>
+<noscript><p class="notice wrap">This site loads its code examples and API list with JavaScript. The raw data is in <a href="data/examples.json">data/examples.json</a> and <a href="data/api.json">data/api.json</a>.</p></noscript>
+<script src="assets/common.js"></script>
+<script src="assets/static.js"></script>
 </body>
 </html>
